@@ -2,14 +2,14 @@
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addContact } from './ContactSlice';
+import { addNewContact } from './ContactSlice';
 import { useSelector } from 'react-redux';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts);
+  const contacts = useSelector((state) => state.contacts.items);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -21,8 +21,8 @@ const ContactForm = () => {
     e.preventDefault();
     const newContact = {
       name,
-      number,
-      id: nanoid(),
+      phone: number,
+      //id: nanoid(),
     };
     const normalizedNewName = newContact.name.toLocaleLowerCase();
     if (
@@ -32,7 +32,8 @@ const ContactForm = () => {
     ) {
       return alert(`Contact ${newContact.name} already exist!`);
     }
-    dispatch(addContact(newContact));
+    dispatch(addNewContact(newContact));
+
     setName('');
     setNumber('');
   };
